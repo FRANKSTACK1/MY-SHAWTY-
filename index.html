@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Teni</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #05070a; /* Midnight Blue/Black */
+            --text-white: #ffffff;
+            --accent-color: #ff4d6d; /* Soft red/pink */
+            --soft-glow: rgba(255, 77, 109, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container for all sections */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section {
+            display: none; /* Sections are hidden initially */
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Text Styles */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #d1d1d1;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 400;
+        }
+
+        /* Typing Cursor */
+        #typewriter::after {
+            content: "|";
+            animation: blink 0.7s infinite;
+        }
+
+        /* Button Styling */
+        .btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--soft-glow);
+        }
+
+        .btn:hover {
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        /* Appreciation Card */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: fixed;
+            color: var(--accent-color);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 999;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="scene1" class="section active">
+            <h1 id="intro-line"></h1>
+        </div>
+
+        <div id="scene2" class="section">
+            <p id="typewriter"></p>
+        </div>
+
+        <div id="scene3" class="section">
+            <div class="card">
+                <h1>Happy Birthday, Teni 🤍🎉</h1>
+                <p>I hope today reminds you how special you are...<br>
+                not just to the world, but to me too.</p>
+            </div>
+            <button class="btn" onclick="nextScene(4)">Next</button>
+        </div>
+
+        <div id="scene4" class="section">
+            <p>Maybe we’re not together right now...<br>
+            Maybe it’s just messages and moments...</p>
+            <p style="margin-top:15px;" class="highlight">But I won’t lie... you mean something to me. 🫂</p>
+            <button class="btn" onclick="showPopup()">Tap this...</button>
+        </div>
+
+        <div id="scene5" class="section">
+            <p style="font-style: italic; color: var(--accent-color); margin-bottom: 10px;">
+                "I’m really glad you exist… and I’m even more glad I know you ❤️"
+            </p>
+            <br>
+            <h1>Enjoy your day, Teni 🤍… I hope today feels as soft as you are when you’re truly yourself.</h1>
+            <p>— Frank🥺</p>
+        </div>
+    </div>
+
+    <script>
+        // Data for typing effects
+        const introText = "Hey Teni...";
+        const secondIntro = "Today isn’t just another day.";
+        
+        const mainMessage = [
+            "It’s the day someone special was brought into this world...",
+            "And somehow... that person found her way into my life 😌",
+            "You’re strong... even when you don’t say it.",
+            "You keep going, even when things aren’t easy.",
+            "And honestly... that’s something I admire about you."
+        ];
+
+        let currentScene = 1;
+
+        // Start the sequence
+        window.onload = () => {
+            typeEffect('intro-line', introText, 100, () => {
+                setTimeout(() => {
+                    document.getElementById('intro-line').style.opacity = 0;
+                    setTimeout(() => {
+                        document.getElementById('intro-line').innerHTML = secondIntro;
+                        document.getElementById('intro-line').style.opacity = 1;
+                        setTimeout(() => nextScene(2), 2500);
+                    }, 1000);
+                }, 2000);
+            });
+            setInterval(createHeart, 500);
+        };
+
+        function nextScene(sceneNum) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const next = document.getElementById(`scene${sceneNum}`);
+            next.classList.add('active');
+
+            if (sceneNum === 2) {
+                typeSequence('typewriter', mainMessage, 0);
+            }
+            if (sceneNum === 3) {
+                fireworks();
+            }
+        }
+
+        function typeEffect(elementId, text, speed, callback) {
+            let i = 0;
+            const ele = document.getElementById(elementId);
+            function type() {
+                if (i < text.length) {
+                    ele.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        function typeSequence(elementId, lines, index) {
+            if (index < lines.length) {
+                const ele = document.getElementById(elementId);
+                ele.innerHTML = ""; 
+                typeEffect(elementId, lines[index], 50, () => {
+                    setTimeout(() => {
+                        typeSequence(elementId, lines, index + 1);
+                    }, 2000);
+                });
+            } else {
+                setTimeout(() => nextScene(3), 1000);
+            }
+        }
+
+        function showPopup() {
+            fireworks();
+            nextScene(5);
+        }
+
+        function fireworks() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffffff', '#ffb3c1']
+            });
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+    </script>
+</body>
+  </html>
+  
